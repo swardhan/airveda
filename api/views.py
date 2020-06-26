@@ -17,8 +17,8 @@ class DeviceViewSet(viewsets.ModelViewSet):
 class DeviceCustomView(APIView):
 
 	def get(self, request, uid, parameter, format=None):
-		start_on = request.GET.get('start_on')
-		end_on = request.GET.get('end_on')
+		start_on = request.GET.get('start_on').replace('T', ' ')
+		end_on = request.GET.get('end_on').replace('T', ' ')
 
 		if parameter == 'temperature':
 			result = TemperatureReading.objects.filter(device_id=uid).filter(created__range=[start_on, end_on]).values()
