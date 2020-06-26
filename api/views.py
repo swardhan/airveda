@@ -20,10 +20,12 @@ class DeviceCustomView(APIView):
 		start_on = request.GET.get('start_on').replace('T', ' ')
 		end_on = request.GET.get('end_on').replace('T', ' ')
 		
+		# Find Device exception Handling
 		try:
 			device = Device.objects.get(uid=uid)
 		except:
 			return Response({'message':'device not found'})
+
 		if parameter == 'temperature':
 			result = TemperatureReading.objects.filter(device_id=uid).filter(created__range=[start_on, end_on]).values()
 
