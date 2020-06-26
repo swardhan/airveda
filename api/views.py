@@ -19,11 +19,17 @@ class DeviceCustomView(APIView):
 	def get(self, request, uid, parameter, format=None):
 		start_on = request.GET.get('start_on').replace('T', ' ')
 		end_on = request.GET.get('end_on').replace('T', ' ')
-
+		
+		try:
+			device = Device.objects.get(uid=uid)
+		except:
+			return Response({'message':'device not found'})
 		if parameter == 'temperature':
 			result = TemperatureReading.objects.filter(device_id=uid).filter(created__range=[start_on, end_on]).values()
+
 		elif parameter == 'humidity':
 			result = HumidityReading.objects.filter(uid=uid).filter(created__range=[start_on, end_on]).values()
+			
 		else:
 			return Response({'message':'wrong parameter'})
 
